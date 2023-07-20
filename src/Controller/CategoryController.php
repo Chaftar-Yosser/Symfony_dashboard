@@ -18,21 +18,26 @@ class CategoryController extends AbstractController
 {
 
     private $em;
-    private $repository;
 
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-//        $this->repository=
     }
 
-    #[Route('/', name: 'category_index')]
+    #[Route('/', name: 'category_index' ,  methods: 'GET')]
     public function index(): JsonResponse
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/CategoryController.php',
-        ]);
+        $categories = $this->em->getRepository(Category::class)->findAll();
+
+        $data = [];
+
+        foreach ($categories as $category) {
+            $data[] = [
+                'id' => $category->getId(),
+                'title' => $category->getTitle(),
+            ];
+        }
+        return $this->json($data);
     }
 
     #[Route('/create', name: 'create_category' , methods: 'POST')]
@@ -48,5 +53,43 @@ class CategoryController extends AbstractController
             'code' => 201,
         ]);
 
+    }
+
+    #[Route('/edit/{id}', name: 'edit_category' , methods: 'PUT')]
+    public function editCategory(Request $request, int $id)
+    {
+        $category = $this->em->getRepository(Category::class)->find($id);
+
+        if (!$category) {
+            return $this->json('No category found for id ' . $id, 404);
+        }
+//        dd($category->getId(),$category->getTitle());
+//        $category->setTitle($request->request->get('title'));
+        $data=json_decode($request->getContent(),true);
+        $category->setTitle($data['title']);
+        $this->em->persist($category);
+        $this->em->flush();
+
+        $data =  [
+            'id' => $category->getId(),
+            'title' => $category->getTitle(),
+        ];
+
+        return $this->json($data);
+    }
+
+    #[Route('/delete/{id}', name: 'delete_category' , methods: 'DELETE')]
+    public function deleteCategory(Request $request, int $id)
+    {
+        $category = $this->em->getRepository(Category::class)->find($id);
+
+        if (!$category) {
+            return $this->json('No category found for id ' . $id, 404);
+        }
+
+        $this->em->remove($category);
+        $this->em->flush();
+
+        return $this->json('Deleted a category successfully with id ' . $id);
     }
 }
