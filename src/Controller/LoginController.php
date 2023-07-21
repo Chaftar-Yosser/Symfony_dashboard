@@ -13,23 +13,9 @@ class LoginController extends AbstractController
     #[Route('/login', name: 'app_login' , methods: 'POST')]
     public function index(Request $request): Response
     {
-
-        $data = json_decode($request->getContent(), true);
-        $username = $data['name'];
-        $password = $data['password'];
-
-        if ($username === 'admin' && $password === 'password') {
-//            dd($username);
-            $response = [
-                'success' => true,
-                'message' => 'Successful connection'
-            ];
-        } else {
-            $response = [
-                'success' => false,
-                'message' => 'Username or password incorrect'
-            ];
-        }
-        return $this->json($response);
+        return $this->json([
+            'message' => 'Welcome to your new controller!',
+            'path' => 'src/Controller/DashboardController.php',
+        ]);
     }
 }

@@ -1,3 +1,8 @@
+# config/routes.yaml
+app_login:
+    path: /app_login
+
+
 controllers:
     resource:
         path: ../src/Controller/
