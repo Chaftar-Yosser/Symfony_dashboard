@@ -1,6 +1,6 @@
 # config/routes.yaml
-app_login:
-    path: /app_login
+api_login_check:
+    path: /login_check
 
 
 controllers:
