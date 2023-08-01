@@ -55,6 +55,22 @@ class CategoryController extends AbstractController
 
     }
 
+    #[Route('/showDetail/{id}', name: 'show_category' , methods: 'GET')]
+    public function showDetailCategory(int $id): JsonResponse
+    {
+        $category = $this->em->getRepository(Category::class)->find($id);
+
+        if (!$category) {
+            return $this->json('No category found for id' . $id, 404);
+        }
+
+        $data =  [
+            'id' => $category->getId(),
+            'title' => $category->getTitle(),
+        ];
+        return $this->json($data);
+    }
+
     #[Route('/edit/{id}', name: 'edit_category' , methods: 'PUT')]
     public function editCategory(Request $request, int $id)
     {

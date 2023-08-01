@@ -12,6 +12,7 @@
         "doctrine/orm": "^2.15",
         "jms/serializer-bundle": "^5.3",
         "lexik/jwt-authentication-bundle": "^2.19",
+        "nelmio/cors-bundle": "^2.3",
         "symfony/console": "6.3.*",
         "symfony/dotenv": "6.3.*",
         "symfony/flex": "^2",

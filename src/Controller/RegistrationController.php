@@ -29,9 +29,13 @@ class RegistrationController extends AbstractController
             $user,
             $plaintextPassword
         );
+//        $role = $decoded->roles;
+//        dd($decoded->roles);
+        $user->setRoles(["ROLE_ADMIN"]);
         $user->setPassword($hashedPassword);
         $user->setEmail($email);
         $user->setUsername($email);
+//        $user->setRoles();
         $em->persist($user);
         $em->flush();
 
